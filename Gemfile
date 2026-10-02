@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 source "https://rubygems.org"
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
@@ -31,3 +32,25 @@ gem "wdm", "~> 0.1", :platforms => [:mingw, :x64_mingw, :mswin]
 # Lock `http_parser.rb` gem to `v0.6.x` on JRuby builds since newer versions of the gem
 # do not have a Java counterpart.
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
+=======
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# needed for Jekyll
+gem 'jekyll'
+gem 'webrick'
+gem 'logger'
+gem 'base64'
+gem 'ostruct'
+
+# needed for Rake tasks
+gem 'rake'
+gem 'csv'
+gem 'fileutils'
+gem 'mini_magick'
+unless Gem.win_platform?
+  gem 'image_optim'
+  gem 'image_optim_pack'
+end
+>>>>>>> e1a78c646fb8e6b29e57885a87efc1bd47361f30
