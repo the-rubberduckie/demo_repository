@@ -33,12 +33,14 @@
 {% if include.child-objects == true %}
 {%- assign gallery-items = site.data[site.metadata] | where_exp: 'item','item.objectid' -%}
 {% else %}
-{%- assign gallery-items = site.data[site.metadata] | where_exp: 'item','item.objectid and item.parentid == nil' -%}
+{%- assign gallery-items = site.data[site.metadata] | where_exp: 'item','item.objectid' | where_exp: 'item','item.parentid == nil' -%}
 {% endif %}
 {% if include.gallery-type %}
 {%- assign gallery-items = gallery-items | where_exp: "item","item.display_template == include.gallery-type" -%}
 {% else %}
-{%- assign gallery-items = gallery-items |  where_exp: "item","item.image_small != nil or item.image_thumb != nil" -%}
+{%- assign gallery-small-items = gallery-items | where_exp: 'item','item.image_small != nil' -%}
+{%- assign gallery-thumb-items = gallery-items | where_exp: 'item','item.image_thumb != nil' -%}
+{%- assign gallery-items = gallery-small-items | concat: gallery-thumb-items | uniq -%}
 {% endif %} 
 {%- if include.filter-field and include.filter-value -%}
 {%- assign gallery-items = gallery-items | where_exp: 'item','item[include.filter-field] contains include.filter-value' -%}
@@ -68,6 +70,6 @@
         {% else %}
         {% include feature/image.html objectid=item.objectid caption=include.captions %}{% endif %}
     </div>
+
     {% endfor %}
 </div>
-
