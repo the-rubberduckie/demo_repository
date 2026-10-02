@@ -21,7 +21,7 @@
 {% if include.child-objects == true %}
 {%- assign items = site.data[site.metadata] | where_exp: 'item','item.objectid' -%}
 {% else %}
-{%- assign items = site.data[site.metadata] | where_exp: 'item','item.objectid and item.parentid == nil' -%}
+{%- assign items = site.data[site.metadata] | where_exp: 'item','item.objectid' | where_exp: 'item','item.parentid == nil' -%}
 {% endif %}
 {%- assign templates = items | map: object_field -%}
 {%- assign types = templates | uniq | compact | sort -%}
@@ -37,7 +37,7 @@
         {% include helpers/get-icon-svg.html type="hidden" template=t %}</a><br>
         {%- endif -%}
         {%- endfor -%}
-        {% if include.others == true %}{% assign others = templates | where_exp: 'item', 'item == nil or item == ""' | size %}{% if others > 0 %}
+        {% if include.others == true %}{% assign others_nil = templates | where_exp: 'item', 'item == nil' | size %}{% assign others_blank = templates | where_exp: 'item', 'item == ""' | size %}{% assign others = others_nil | plus: others_blank %}{% if others > 0 %}
         {{ others }} OTHER {% include helpers/get-icon-svg.html type="hidden" %}<br>{% endif %}{% endif %}
         {% if include.total == true %}
         {{ templates | size }} TOTAL ITEMS<br>{% endif %}
